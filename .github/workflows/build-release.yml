@@ -21,6 +21,10 @@ jobs:
           - arch: aarch64
             sdk_url_path: https://downloads.openwrt.org/releases/24.10.0/targets/mediatek/filogic
             sdk_name: -sdk-24.10.0-mediatek-filogic_
+
+          # - arch: x86_64
+          #   sdk_url_path: https://downloads.openwrt.org/releases/23.05.5/targets/x86/64
+          #   sdk_name: -sdk-23.05.5-x86-64_
     env:
       SDK_URL_PATH: ${{ matrix.sdk_url_path }}
       SDK_NAME: ${{ matrix.sdk_name }}
@@ -78,8 +82,10 @@ jobs:
           fi
           cd -
           file "$CACHE_DIR_SDK/$SDK_FILE"
+
+          # unzstd "$CACHE_DIR_SDK/$SDK_FILE"
           # 7z x "$CACHE_DIR_SDK/$SDK_FILE" -so | tar -C "$SDK_HOME" -xvf - --strip=1
-          tar -C "$SDK_HOME" --zstd -xvf "$CACHE_DIR_SDK/$SDK_FILE" - --strip=1
+          tar -C "$SDK_HOME" --zstd -xvf --strip=1 "$CACHE_DIR_SDK/$SDK_FILE"
 
           cd "$SDK_HOME"
           test -d "dl" && rm -rf "dl" || true
